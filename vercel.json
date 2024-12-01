@@ -9,18 +9,18 @@
       "src": "socket/client/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "socket/client/dist"  
+        "distDir": "socket/client/dist"
       }
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "socket/server/app.js" 
+      "src": "/api/(.*)", 
+      "dest": "socket/server/app.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "socket/client/dist/$1" 
+      "src": "/(.*)",  
+      "dest": "socket/client/dist/$1"
     }
   ]
 }
