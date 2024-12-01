@@ -10,9 +10,9 @@ const ChatMsg = () => {
   const [roomName, setRoomName] = useState("");  // for joining a room
 
   // Update the URL to your Vercel server URL for production
-  const socket = useMemo(() => io("http://localhost:3000"), []);  // During local development
+  // const socket = useMemo(() => io("http://localhost:3000"), []);  // During local development
   // For production, replace with your Vercel URL:
-  // const socket = useMemo(() => io("https://your-app-name.vercel.app"), []); 
+  const socket = useMemo(() => io("https://chatting-group-naveen.vercel.app"), []); 
 
   useEffect(() => {
     socket.on("connect", () => {
