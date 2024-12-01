@@ -11,7 +11,7 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
     // origin: "http://localhost:5173",  // Frontend URL, update for Vercel when deployed
-    origin: "https://chatting-group.client.vercel.app",  // Your frontend URL 
+    origin: "https://chatting-group-client.vercel.app",  // Your frontend URL 
     methods: ["GET", "POST"],
     credentials: true,
   }
@@ -20,7 +20,7 @@ const io = new Server(server, {
 // Middleware for CORS
 app.use(cors({
 //   origin: "http://localhost:5173",  // Frontend URL, update for Vercel when deployed
-  origin: "https://chatting-group.client.vercel.app",  // Your frontend URL 
+  origin: "https://chatting-group-client.vercel.app",  // Your frontend URL 
   methods: ["GET", "POST"],
   credentials: true,
 }));
