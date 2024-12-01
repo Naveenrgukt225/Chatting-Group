@@ -10,7 +10,6 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    // origin: "http://localhost:5173",  // Frontend URL, update for Vercel when deployed
     origin: "https://chatting-group-client.vercel.app",  // Your frontend URL 
     methods: ["GET", "POST"],
     credentials: true,
@@ -19,7 +18,6 @@ const io = new Server(server, {
 
 // Middleware for CORS
 app.use(cors({
-//   origin: "http://localhost:5173",  // Frontend URL, update for Vercel when deployed
   origin: "https://chatting-group-client.vercel.app",  // Your frontend URL 
   methods: ["GET", "POST"],
   credentials: true,
@@ -32,23 +30,23 @@ app.get("/", (req, res) => {
 
 // Handling user connections and messages
 io.on("connection", (socket) => {
-//   console.log("User Connected:", socket.id);
+  console.log(`User Connected: ${socket.id}`);
 
   // Join room event
   socket.on("join-room", (room) => {
     socket.join(room);
-    // console.log(`${socket.id} joined room ${room}`);
+    console.log(`${socket.id} joined room ${room}`);
   });
 
   // Message event - broadcast to room
   socket.on("message", ({ message, room }) => {
-    // console.log(`Message from ${socket.id}: ${message} to room: ${room}`);
+    console.log(`Message from ${socket.id}: ${message} to room: ${room}`);
     socket.to(room).emit("receive-message", { message });  // Emit message to all in room excluding sender
   });
 
   // User disconnect event
   socket.on("disconnect", () => {
-    // console.log("User Disconnected:", socket.id);
+    console.log("User Disconnected:", socket.id);
   });
 });
 
