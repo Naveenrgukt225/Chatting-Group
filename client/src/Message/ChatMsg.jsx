@@ -9,46 +9,54 @@ const ChatMsg = () => {
   const [socketID, setSocketId] = useState("");  // to send message to a particular person
   const [roomName, setRoomName] = useState("");  // for joining a room
 
-  const socket = useMemo(() => io("http://localhost:3000"), []);
+  // Update the URL to your Vercel server URL for production
+  const socket = useMemo(() => io("http://localhost:3000"), []);  // During local development
+  // For production, replace with your Vercel URL:
+  // const socket = useMemo(() => io("https://your-app-name.vercel.app"), []); 
+
   useEffect(() => {
     socket.on("connect", () => {
         setSocketId(socket.id);
     });
 
-    socket.on("recive-message", (data) => {
+    // Listen for the event to receive messages
+    socket.on("receive-message", (data) => {
         setMessages((prevMessages) => [...prevMessages, data.message]);
     });
 
     return () => {
         socket.disconnect();
     };
-}, []);
+  }, [socket]);
 
-const handleJoinRoom = (e) => {
+  // Join the room
+  const handleJoinRoom = (e) => {
     e.preventDefault();
     socket.emit("join-room", roomName);
     setRoomName("");
-};
+  };
 
-const handleSubmit = (e) => {
+  // Send the message
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (room && message) {
         socket.emit("message", { message, room });
         setMessage("");
     }
-};
+  };
 
   return (
     <div className='outer-container'>
       <div className='container'>
         <h4 className='id-field'>{socketID}</h4>
         <br />
-    
+
         <div className="messages-field">
           {messages.map((msg, index) => (
                     <div key={index}>{msg}</div>
                 ))}
         </div>
+        
         <div className='join-label'>
           <form onSubmit={handleJoinRoom}>
             <div className='input-field'>
@@ -88,12 +96,6 @@ const handleSubmit = (e) => {
             <button type='submit'>Send</button>
           </div>
         </form>
-
-        {/* <div className="messages-field">
-          {messages.map((msg, index) => (
-                    <div key={index}>{msg}</div>
-                ))}
-        </div> */}
       </div>
     </div>
   );
