@@ -12,7 +12,7 @@ const ChatMsg = () => {
   // Update the URL to your Vercel server URL for production
   // const socket = useMemo(() => io("http://localhost:3000"), []);  // During local development
   // For production, replace with your Vercel URL:
-  const socket = useMemo(() => io("https://chatting-group-naveen.vercel.app"), []); 
+  const socket = useMemo(() => io("https://chatting-group-server.vercel.app"), []); 
 
   useEffect(() => {
     socket.on("connect", () => {
