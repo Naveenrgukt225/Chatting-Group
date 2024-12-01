@@ -19,7 +19,7 @@ const io = new Server(server, {
 
 // Middleware for CORS
 app.use(cors({
-//   origin: "http://localhost:5173",  // Frontend URL, update for Vercel when deployed
+  // origin: "http://localhost:5173",  // Frontend URL, update for Vercel when deployed
   origin: "https://chatting-group-client.vercel.app",  // Your frontend URL 
   methods: ["GET", "POST"],
   credentials: true,
@@ -32,27 +32,44 @@ app.get("/", (req, res) => {
 
 // Handling user connections and messages
 io.on("connection", (socket) => {
-//   console.log("User Connected:", socket.id);
+  console.log(`User connected: ${socket.id}`);
 
   // Join room event
   socket.on("join-room", (room) => {
+    console.log(`Socket ${socket.id} joined room: ${room}`);
     socket.join(room);
-    // console.log(`${socket.id} joined room ${room}`);
   });
 
   // Message event - broadcast to room
   socket.on("message", ({ message, room }) => {
-    // console.log(`Message from ${socket.id}: ${message} to room: ${room}`);
-    socket.to(room).emit("receive-message", { message });  // Emit message to all in room excluding sender
+    console.log(`Message from ${socket.id}: ${message} to room: ${room}`);
+    try {
+      socket.to(room).emit("receive-message", { message });
+    } catch (err) {
+      console.error(`Error broadcasting message: ${err.message}`);
+    }
   });
 
   // User disconnect event
   socket.on("disconnect", () => {
-    // console.log("User Disconnected:", socket.id);
+    console.log(`User Disconnected: ${socket.id}`);
+  });
+
+  // Error event to catch unexpected errors in Socket.IO
+  socket.on("error", (err) => {
+    console.error(`Socket error: ${err.message}`);
   });
 });
 
-// Start server
+// Error handling for Express
+app.use((err, req, res, next) => {
+  console.error(`Express Error: ${err.message}`);
+  res.status(500).send("Something went wrong!");
+});
+
+// Start server and log errors if any
 server.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
+}).on("error", (err) => {
+  console.error(`Server failed to start: ${err.message}`);
 });
