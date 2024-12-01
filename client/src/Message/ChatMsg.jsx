@@ -9,10 +9,8 @@ const ChatMsg = () => {
   const [socketID, setSocketId] = useState("");  // to send message to a particular person
   const [roomName, setRoomName] = useState("");  // for joining a room
 
-  // Update the URL to your Vercel server URL for production
-  // const socket = useMemo(() => io("http://localhost:3000"), []);  // During local development
-  // For production, replace with your Vercel URL:
-  const socket = useMemo(() => io("https://chatting-group-server.vercel.app"), []); 
+  // For production, replace with your Vercel backend URL:
+   const socket = useMemo(() => io("https://chatting-group-server.vercel.app"), []); 
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -53,10 +51,10 @@ const ChatMsg = () => {
 
         <div className="messages-field">
           {messages.map((msg, index) => (
-                    <div key={index}>{msg}</div>
-                ))}
+            <div key={index}>{msg}</div>
+          ))}
         </div>
-        
+
         <div className='join-label'>
           <form onSubmit={handleJoinRoom}>
             <div className='input-field'>
