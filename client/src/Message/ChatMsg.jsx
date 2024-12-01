@@ -10,7 +10,7 @@ const ChatMsg = () => {
   const [roomName, setRoomName] = useState("");  // for joining a room
 
   // For production, replace with your Vercel backend URL:
-   const socket = useMemo(() => io("https://chatting-group-server.vercel.app"), []); 
+   const socket = useMemo(() => io("https://chatting-group-server1.vercel.app"), []); 
 
   useEffect(() => {
     socket.on("connect", () => {
